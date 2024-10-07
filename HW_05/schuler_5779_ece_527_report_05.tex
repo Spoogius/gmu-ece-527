@@ -1,0 +1,750 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Keep aspect ratio if custom image width or height is specified
+    \setkeys{Gin}{keepaspectratio}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+
+    \usepackage{iftex}
+    \ifPDFTeX
+        \usepackage[T1]{fontenc}
+        \IfFileExists{alphabeta.sty}{
+              \usepackage{alphabeta}
+          }{
+              \usepackage[mathletters]{ucs}
+              \usepackage[utf8x]{inputenc}
+          }
+    \else
+        \usepackage{fontspec}
+        \usepackage{unicode-math}
+    \fi
+
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics
+                         % to support a larger range
+    \makeatletter % fix for old versions of grffile with XeLaTeX
+    \@ifpackagelater{grffile}{2019/11/01}
+    {
+      % Do nothing on new versions
+    }
+    {
+      \def\Gread@@xetex#1{%
+        \IfFileExists{"\Gin@base".bb}%
+        {\Gread@eps{\Gin@base.bb}}%
+        {\Gread@@xetex@aux#1}%
+      }
+    }
+    \makeatother
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage{array}     % table support for pandoc >= 2.11.3
+    \usepackage{calc}      % table minipage width calculation for pandoc >= 2.11.1
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{soul}      % strikethrough (\st) support for pandoc >= 3.0.0
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % common color for the border for error outputs.
+    \definecolor{outerrorbackground}{HTML}{FFDFDF}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+
+
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{schuler\_5779\_ece\_527\_report\_05}
+    
+    
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\@namedef{PY@tok@w}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\@namedef{PY@tok@c}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cp}{\def\PY@tc##1{\textcolor[rgb]{0.61,0.40,0.00}{##1}}}
+\@namedef{PY@tok@k}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kt}{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\@namedef{PY@tok@o}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ow}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@nb}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nf}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@nn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@ne}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.80,0.25,0.22}{##1}}}
+\@namedef{PY@tok@nv}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@no}{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\@namedef{PY@tok@nl}{\def\PY@tc##1{\textcolor[rgb]{0.46,0.46,0.00}{##1}}}
+\@namedef{PY@tok@ni}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@na}{\def\PY@tc##1{\textcolor[rgb]{0.41,0.47,0.13}{##1}}}
+\@namedef{PY@tok@nt}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@nd}{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\@namedef{PY@tok@s}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sd}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@si}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@se}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.36,0.12}{##1}}}
+\@namedef{PY@tok@sr}{\def\PY@tc##1{\textcolor[rgb]{0.64,0.35,0.47}{##1}}}
+\@namedef{PY@tok@ss}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sx}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@m}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@gh}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gu}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\@namedef{PY@tok@gd}{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\@namedef{PY@tok@gi}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.52,0.00}{##1}}}
+\@namedef{PY@tok@gr}{\def\PY@tc##1{\textcolor[rgb]{0.89,0.00,0.00}{##1}}}
+\@namedef{PY@tok@ge}{\let\PY@it=\textit}
+\@namedef{PY@tok@gs}{\let\PY@bf=\textbf}
+\@namedef{PY@tok@ges}{\let\PY@bf=\textbf\let\PY@it=\textit}
+\@namedef{PY@tok@gp}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\@namedef{PY@tok@go}{\def\PY@tc##1{\textcolor[rgb]{0.44,0.44,0.44}{##1}}}
+\@namedef{PY@tok@gt}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\@namedef{PY@tok@err}{\def\PY@bc##1{{\setlength{\fboxsep}{\string -\fboxrule}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}}
+\@namedef{PY@tok@kc}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kd}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kn}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@kr}{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@bp}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\@namedef{PY@tok@fm}{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\@namedef{PY@tok@vc}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vg}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vi}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@vm}{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\@namedef{PY@tok@sa}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sb}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sc}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@dl}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s2}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@sh}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@s1}{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\@namedef{PY@tok@mb}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mf}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mh}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mi}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@il}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@mo}{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\@namedef{PY@tok@ch}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cm}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cpf}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@c1}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+\@namedef{PY@tok@cs}{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.24,0.48,0.48}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb.
+    \makeatletter
+        \newbox\Wrappedcontinuationbox
+        \newbox\Wrappedvisiblespacebox
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}}
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}}
+        \newcommand*\Wrappedcontinuationindent {3ex }
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox}
+        % Take advantage of the already applied Pygments mark-up to insert
+        % potential linebreaks for TeX processing.
+        %        {, <, #, %, $, ' and ": go to next line.
+        %        _, }, ^, &, >, - and ~: stay at end of broken line.
+        % Use of \textquotesingle for straight quote.
+        \newcommand*\Wrappedbreaksatspecials {%
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}%
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}%
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}%
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}%
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}%
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}%
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}%
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}%
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}%
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}%
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}%
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}%
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}%
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}%
+        }
+        % Some characters . , ; ? ! / are not pygmentized.
+        % This macro makes them "active" and they will insert potential linebreaks
+        \newcommand*\Wrappedbreaksatpunct {%
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}%
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}%
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}%
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}%
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}%
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}%
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}%
+            \catcode`\.\active
+            \catcode`\,\active
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active
+            \lccode`\~`\~
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        {\ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{gmu-ece-527---computer-exercise-05---report}{%
+\section{GMU ECE 527 - Computer Exercise \#05 -
+Report}\label{gmu-ece-527---computer-exercise-05---report}}
+
+\textbf{Stewart Schuler - G01395779}\\
+\textbf{20241007}
+
+    \hypertarget{exercise-5.1}{%
+\subsection{Exercise 5.1}\label{exercise-5.1}}
+
+\hypertarget{data-preparation}{%
+\paragraph{Data Preparation}\label{data-preparation}}
+
+The first task after importing the \emph{diabetes} dataset is to scale
+the features to a roughly common scale. This can be done by two
+different approaches. \emph{MinMax Normalization} which divides the
+dataset but the largest value bounding the transformed features between
+0 and 1. Or by \emph{Standard Normalization} which subtracks the mean
+and divides by the variance. The result of apply the two different
+normalization approaches the the dataset is shown in \emph{Figure 1}. It
+can be seen that some of the features, namely 5 and 7, have a large
+number of datapoints which fall very far outside the box plots quartile
+range. In the case of \emph{Standard Normalization} these point being so
+far away from the feature average means that post transformation the
+features cover non-insignificant ranges. Because of this, for this
+dataset \emph{MinMax Normalization} is the better approach to take. For
+the remainder of this lab the data being applied to the regression
+models will be \emph{MinMax} normalized.
+
+\includegraphics{figures/5_3_box_plots.jpg}\\
+\textbf{Figure 1.} Normalized Dataset Box Plots
+
+Since we are doing regression it is helpful to maintain a separate
+testset of data to be used to compare the regressors results to. Because
+we want the test set to be completely isolated from any part of the
+training procedure, when it comes to normalizing the test set we use the
+normalization parameters extracted from the training set. In the case of
+\emph{MinMax Normalization} which we are using, it is possible that a
+feature value in the test set could be larger or smaller that those in
+the training set. Which would lead to a value outside of the bounded 0
+to 1 range. While not ideal, that must be the case to maintain test set
+independence.
+
+    \hypertarget{experiment-5.4}{%
+\paragraph{Experiment 5.4}\label{experiment-5.4}}
+
+Next we compute the correlation between all the features and with the
+desired result \emph{Outcome}. This is presented in tabular for in
+\emph{Table 1} and as a heatmap in \emph{Figure 2}.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.10}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.10}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.10}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.10}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.10}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.10}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.10}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.10}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.10}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 18\tabcolsep) * \real{0.10}}@{}}
+\toprule
+\begin{minipage}[b]{\linewidth}\raggedright
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Pregnancies
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Glucose
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+BloodPressure
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SkinThickness
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Insulin
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+BMI
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+DiabetesPedigreeFunction
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Age
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Outcome
+\end{minipage} \\
+\midrule
+\endhead
+Pregnancies & 1.000000 & 0.129459 & 0.141282 & -0.081672 & -0.073535 &
+0.017683 & -0.033523 & 0.544341 & 0.221898 \\
+Glucose & 0.129459 & 1.000000 & 0.152590 & 0.057328 & 0.331357 &
+0.221071 & 0.137337 & 0.263514 & 0.466581 \\
+BloodPressure & 0.141282 & 0.152590 & 1.000000 & 0.207371 & 0.088933 &
+0.281805 & 0.041265 & 0.239528 & 0.065068 \\
+SkinThickness & -0.081672 & 0.057328 & 0.207371 & 1.000000 & 0.436783 &
+0.392573 & 0.183928 & -0.113970 & 0.074752 \\
+Insulin & -0.073535 & 0.331357 & 0.088933 & 0.436783 & 1.000000 &
+0.197859 & 0.185071 & -0.042163 & 0.130548 \\
+BMI & 0.017683 & 0.221071 & 0.281805 & 0.392573 & 0.197859 & 1.000000 &
+0.140647 & 0.036242 & 0.292695 \\
+DiabetesPedigreeFunction & -0.033523 & 0.137337 & 0.041265 & 0.183928 &
+0.185071 & 0.140647 & 1.000000 & 0.033561 & 0.173844 \\
+Age & 0.544341 & 0.263514 & 0.239528 & -0.113970 & -0.042163 & 0.036242
+& 0.033561 & 1.000000 & 0.238356 \\
+Outcome & 0.221898 & 0.466581 & 0.065068 & 0.074752 & 0.130548 &
+0.292695 & 0.173844 & 0.238356 & 1.000000 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Table 1.} Feature Corrleation
+
+\includegraphics{figures/5_4_heatmap.jpg}\\
+\textbf{Figure 2.} Feature Correlation
+
+From the above correlation we can see that \emph{Age/Pregnancies},
+\emph{Insulin/SkinThickness} and \emph{BMI/SkinThickness} have the
+highest correlation values between features. When correlated the
+\emph{Outcome}, \emph{Glucose}, \emph{BMI}, and \emph{Age} have the
+strongest correlation.
+
+Next consider the pair plot in \emph{Figure 3} for the three features
+identified as having the strongest correlation with \emph{Outcome}. It
+can be seen that \emph{Glucose} has the strong separation between the
+two distributions as we would expect given the strongest correlation
+value. Secondly, the 2D plot of \emph{BMI} and \emph{Glucose} appears to
+have the strongest separation between feature clusters. That would mean
+those two features in combination would be a good candidate for a
+reduced feature space model.
+
+\includegraphics{figures/5_4_pair_plot.jpg}\\
+\textbf{Figure 3.} Feature Pair Plot
+
+    \hypertarget{experiment-5.5}{%
+\paragraph{Experiment 5.5}\label{experiment-5.5}}
+
+Next we apply the \emph{LogisticalRegressor} \emph{scikit-learn} class
+to the dataset. We initially use all the available features, the result
+of such a test are shown in \emph{Table 2}. For comparison, included is
+the results using \emph{Standard Normalization} as well. The results
+confirm our hunch that \emph{MinMax Normalization} would be better
+suited for this dataset. However the difference is so small both would
+likely be acceptable.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Normalization & Accuracy \\
+\midrule
+\endhead
+MinMax & 78.57 \\
+Standard & 77.38 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Table 2.} Logistical Regression Results - Full Features
+
+Plotting the pseduo-probabilities computed by the classifier in
+\emph{Figure 4} we can see a trend that the classifier makes predictions
+with a much higher confidence when guessing an outcome of \(0\). This
+can be analytically shown by computing the ratio of high confidence
+predictions. Computed as follows for the two classes.
+
+\[
+\frac{\# Pred > 0.8}{\# Pred > 0.5} = 10.0\%
+\] \[
+\frac{\# Pred < 0.2}{\# Pred < 0.5} = 32.0\%
+\]
+
+Likewise \(73\%\) of all predictions fall in this \emph{low confidence}
+region between 0.2 and 0.8.
+
+\includegraphics{figures/5_5_distro.jpg}\\
+\textbf{Figure 4.} Decision Probability
+
+From these number it can be concluded that the classifier is more
+confident when predicting an outcome of \(0\) rather than \(1\), in the
+latter case the classifier is not very confident in it's answers. This
+likely means that the decision boundary being learned by the classifier
+well encompases the \(0\) class, but in doing so has a decent ammount of
+\(1\) class samples contained in it.
+
+    \hypertarget{experiment-5.6}{%
+\paragraph{Experiment 5.6}\label{experiment-5.6}}
+
+Next we consider the confusion matrix for the classifier. The results
+it's present appear to line up with our intuition from the \emph{Figure
+4}, in that the classifier is more confident about predicting class
+\(0\) and less confident about class \(1\). The can be shown
+analytically be comaring the inclass accuracies of the two classes. A
+value of \(92.5\%\) for class \(0\) and only a \(53.3\%\) accuracy for
+class \(1\).
+
+To interpret the confusion matrix, the sum of each row indicates the
+number of samples corresponding to the \emph{truth} value for each
+class. That is there were \(108\) samples in the test dataset that have
+an label of \(0\) and \(60\) samples that have a label of \(1\)\\
+Likewise the sum of each column represent to predicted labels of the
+test dataset. That is the classifier predicted \(128\) samples would be
+class \(0\) and only \(40\) samples for class \(1\).
+
+It can be clearly seen in \emph{Figure 5} that the confusion matrix is
+not symmetic. Ideally we would want out classifier to by roughly
+symmetic, a symmetic matrix means that the classifier performs
+equivilantly on each of the classes. The imbalance displayed by our
+matrix indicates it performs significantly better on one class (\(0\))
+than the other.
+
+\includegraphics{figures/5_6_cm.jpg}\\
+\textbf{Figure 5.} Decision Probability
+
+Next from the confusion matrix values we can compute some additional
+metics. The \emph{Precision}, \emph{Recall}, and \emph{f1-score} found
+in \emph{Table 3}.
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Metric & Score \\
+\midrule
+\endhead
+Precision & 0.80 \\
+Recall & 0.53 \\
+f1-score & 0.64 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Table 3.} Additional Metrics
+
+From this additional discussion of results it can be seen how the raw
+accuracy value can be misleading about the performance of a classifier.
+The designed predictor performs well if the goal was only to correctly
+identify input as class \(0\), which is the majority class in this
+dataset leading to an inflated accuracy score. However we have shown
+that the classifier does a very poor job at correctly predicting samples
+belonging to class \(1\), in fact it only slightly out performs a 50-50
+guess. Also taking into consideration the medical nature of this
+dataset, the biggest risk when diagnosing a patient would be a
+\emph{false negative}, which are abundant in this classifier. From that
+we can conclude that this classifier is not very good.
+
+Lastly we consider a further advanced metric the \emph{ROC} curve, shown
+in Figure 6. In the \emph{ROC} curve our classifier with a \(\gamma\)
+value of 0, lays at the point indicated by the green square. The ideal
+classifier is a the top left corner of the plot, when \emph{True
+Positive Rate} is 1, and \emph{False Positive Rate} is 0. With this is
+mind it make sense to increase the \(\gamma\) value such that the
+classifier moves closer to that point on the plot.
+
+Also in the \emph{ROC} curve there is the red dashed line, this line
+indicate a reference classifier for a classifier that chooses \(1\) for
+every decision.
+
+\includegraphics{figures/5_6_roc.jpg}\\
+\textbf{Figure 6.} \emph{ROC} Curve
+
+    \hypertarget{experiment-5.7}{%
+\paragraph{Experiment 5.7}\label{experiment-5.7}}
+
+To examine the learned inpact of each feature on the outcomes we can
+plots the coefficients of the \(\bf{w}\) vector, as shown in
+\emph{Figure 7}. From the plot we can see that \emph{Glucose} and
+\emph{BMI} are the two most significant feature on the outcome. This is
+inline with what we expect from our previous analysis. Interestingly
+\emph{BloodPressure} has a negative impact on outcome, that is the
+higher the blood pressure the more likely the result will be \(0\).
+
+When comparing two features, \emph{BloodPressure} and \emph{Age}, to
+determine which feature is more important there are two considerations
+that must be taken. The first is the absolute value of the \(\bf{w}\)
+vector contribution, from that we can be seen that \emph{Age} has a
+\emph{marginally} higher impact on the result so we might be tempted to
+say \emph{Age} is the more important feature. The second consideration
+is that since \emph{BloodPressure} is the only negatively weighted
+feature it's uniqueness give is more importance. For example, in a
+normalized random sample with a true label of \(1\), the contribution of
+\emph{Age} towards the final result being \(1\) would be dwarfed by the
+other features with positive weights. Where as for a sample with a true
+label of \(0\), where all the positivly weighted values contribute
+minimally it is heavily dependent on the \emph{BloodPressure} feature to
+drive the result down. Therefore, it can be concluded that
+\emph{BloodPressure} is the more important of the two features.
+
+\includegraphics{figures/5_7_feature_weights.jpg}\\
+\textbf{Figure 7.} Feature Weights
+
+    \hypertarget{experiment-5.8}{%
+\paragraph{Experiment 5.8}\label{experiment-5.8}}
+
+Next consider a specific input case, defined by the prenomalized values
+in \emph{Table 4}. For this case the classifier predict a negative
+diagnosis since the \(Pr\{y==1 | \bf{x}\} = 0.31\).
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+Feature & Value \\
+\midrule
+\endhead
+Pregnancies & 0 \\
+Glucose & 130 \\
+BloodPressure & 125 \\
+SkinThickness & 30 \\
+Insulin & 100 \\
+BMI & 32 \\
+DiabetesPedigreeFunction & 1.1 \\
+Age & 25 \\
+Predicted Outcome & 0.31 \\
+\bottomrule
+\end{longtable}
+
+\textbf{Table 4.} Specific Case Prediction
+
+Finally we consider the predictor when trained and tested on a single
+feature at a time. It can be seen in \emph{Figure 8} that those features
+such as \emph{BMI} and \emph{Glucose} which had stronger weight values
+(when trained on all features) have a steeper slope and cover the full
+range of probabilities from 0 to 1. Where as those features which has
+smaller weight values cover a smaller range with a flatter scope. And
+Never really approach an outcome probabiltiy of 0 or 1 within a
+reasonable feature rage.
+
+When trained solely on the \emph{BloodPressure} feature, given the
+result in \emph{Figure 7}, I would've expected the slope to be negative.
+However that isn't that case, it does have the flattest slope of all the
+features is still positive. That must mean for \emph{BloodPressure} to
+negatively contribute to the outcome it must be coupled with some other
+feature.
+
+\includegraphics{figures/5_8_single_feature.jpg}\\
+\textbf{Figure 8.} Feature Weights
+
+    \hypertarget{extra-credit}{%
+\paragraph{Extra Credit}\label{extra-credit}}
+
+Consider next the impact of \emph{Age} on specific features. It is known
+that \emph{Age} is positively correlated with an increased
+\emph{Outcome} of \(1\). To visualize how much \emph{Age} modifies this
+outcome we can plot the probability for a specific feature binned into
+discrete age ranges. \emph{Figure 9} and \emph{10} show this for
+\emph{Glucose} and \emph{BMI} respectively.
+
+From \emph{Figure 10} it can be seen how much of an impact \emph{Age}
+play in the prediction by comparing age ranges at the same \emph{BMI}
+value. For example, for a \emph{BMI} of \(40\) there is nearly a \(0.4\)
+difference in predicted outcome between the highest and lowest age
+ranges. Where as in \emph{Figure 9} we see much smaller separation
+between age ranges for the same value of \emph{Glucose}. Keeping that
+observation in mind can be a useful dianostic tool.
+
+\includegraphics{figures/ec_age_range_Glucose.jpg}\\
+\textbf{Figure 9.} Glucose in Age Bins
+
+\includegraphics{figures/ec_age_range_BMI.jpg}\\
+\textbf{Figure 10.} BIM in Age Bins
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
